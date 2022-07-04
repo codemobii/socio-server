@@ -1,11 +1,9 @@
 const express = require("express");
 const app = express();
-
+const http = require("http").Server(app);
+const path = require("path");
 const cors = require("cors");
-
-const server = require("http").createServer(app);
-
-const io = require("socket.io")(server, {
+const io = require("socket.io")(http, {
   cors: {
     origin: ["http://localhost:3000", "https://nlsalumni.org"],
     credentials: true,
@@ -13,8 +11,15 @@ const io = require("socket.io")(server, {
   },
 });
 
+app.use(express.static(path.join(__dirname, "/app.html")));
 app.use(cors());
-
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+  next();
+});
 app.get("/", (req, res) => {
   res.json({
     message: "Socio Server is Running",
@@ -37,6 +42,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3000, () => {
-  console.log("Server is running");
+http.listen(port, () => {
+  console.log("listening on *:" + port);
 });
