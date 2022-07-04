@@ -1,10 +1,25 @@
 const express = require("express");
 const app = express();
 
+const cors = require("cors");
+
 const server = require("http").createServer(app);
 
 const io = require("socket.io")(server, {
-  cors: { origin: "*" },
+  cors: {
+    origin: ["http://localhost:3000", "https://nlsalumni.org"],
+    credentials: true,
+    methods: ["GET", "POST"],
+  },
+});
+
+app.use(cors());
+
+app.get("/", (req, res) => {
+  res.json({
+    message: "Socio Server is Running",
+    time: new Date().toString(),
+  });
 });
 
 io.on("connection", (socket) => {
