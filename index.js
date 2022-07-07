@@ -40,6 +40,21 @@ io.on("connection", (socket) => {
     // socket.broadcast.emit('sendPostToClient', [feed, user]);
   });
 
+  socket.on("sendLikedPostToServer", ([likePost, likePostCount]) => {
+    console.log([likePost, likePostCount]);
+
+    socket.broadcast.emit("sendLikedPostToClient", [likePost, likePostCount]);
+  });
+
+  socket.on("sendCommentCountToServer", ([user_comment, commentCount]) => {
+    console.log([user_comment, commentCount]);
+
+    socket.broadcast.emit("sendCommentCountToClient", [
+      user_comment,
+      commentCount,
+    ]);
+  });
+
   socket.on("disconnect", (socket) => {
     console.log("Disconnect");
   });
