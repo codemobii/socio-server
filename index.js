@@ -40,20 +40,47 @@ io.on("connection", (socket) => {
     // socket.broadcast.emit('sendPostToClient', [feed, user]);
   });
 
-  socket.on("sendLikedPostToServer", ([likePost, likePostCount]) => {
-    console.log([likePost, likePostCount]);
+  socket.on(
+    "sendLikedPostToServer",
+    ([likePost, likePostCount, notification, notification_count, user]) => {
+      console.log([
+        likePost,
+        likePostCount,
+        notification,
+        notification_count,
+        user,
+      ]);
 
-    socket.broadcast.emit("sendLikedPostToClient", [likePost, likePostCount]);
-  });
+      socket.broadcast.emit("sendLikedPostToClient", [
+        likePost,
+        likePostCount,
+        notification,
+        notification_count,
+        user,
+      ]);
+    }
+  );
 
-  socket.on("sendCommentCountToServer", ([user_comment, commentCount]) => {
-    console.log([user_comment, commentCount]);
+  socket.on(
+    "sendCommentCountToServer",
+    ([user_comment, commentCount, notification, notification_count, user]) => {
+      console.log([
+        user_comment,
+        commentCount,
+        notification,
+        notification_count,
+        user,
+      ]);
 
-    socket.broadcast.emit("sendCommentCountToClient", [
-      user_comment,
-      commentCount,
-    ]);
-  });
+      socket.broadcast.emit("sendCommentCountToClient", [
+        user_comment,
+        commentCount,
+        notification,
+        notification_count,
+        user,
+      ]);
+    }
+  );
 
   socket.on("disconnect", (socket) => {
     console.log("Disconnect");
